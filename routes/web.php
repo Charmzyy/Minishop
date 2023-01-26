@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SubCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +18,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    redirect('product.index');
 });
+
+Route::resource('/category', CategoryController::class);
+Route::resource('/subcategory', SubCategoryController::class);
+Route::resource('/order', OrderController::class);
+Route::resource('/product', ProductController::class);
+
