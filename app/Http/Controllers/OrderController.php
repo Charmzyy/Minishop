@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -35,14 +36,29 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $cart = session()->get('cart', []);
+    
         $order = Order::create([
-            'user_id'=>$request->input('user_id'),
-            'total_price'=>$request->input('total_price'),
-            'delivery'=>$request->input('delivery')
-            
+            'user_id' => auth()->id(),
+            'total_amount' => 0
         ]);
+    
+        foreach ($cart as $product_id) {
+            $product = Product::find($product_id);
+            $order->orderItems()->create([
+                'product_id' => $product->id,
+                'unit_price' => $product->price,
+                'quantity' => 1
+            ]);
+            $order->total_amount += $product->price;
+        }
+    
+        $order->save();
+        session()->forget('cart');
+    
+        return redirect('/orders');
     }
+    
 
     /**
      * Display the specified resource.
@@ -64,7 +80,8 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('order.edit',[
+            'order' =>Order::where('id',$id)->first() ]);
     }
 
     /**
@@ -76,7 +93,12 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = [
+            'product_id'=>$request->input(),
+            'quantity'=>$request->input(),
+        ];
+
+        Order::where('id',$id)->update($data);
     }
 
     /**

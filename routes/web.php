@@ -26,3 +26,7 @@ Route::resource('/subcategory', SubCategoryController::class);
 Route::resource('/order', OrderController::class);
 Route::resource('/product', ProductController::class);
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

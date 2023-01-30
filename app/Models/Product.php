@@ -9,17 +9,19 @@ class Product extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'sub_id',
-        'name',
+        'category_id',
+        'product_name',
         'price',
-        'likes'
+        'quantity',
+        'image_path',
+        'type',
     ];
 
-    public function order_item(){
-        return $this->hasOne(Order_items::class,'product_id');
+    public function category(){
+        return $this->belongsTo(Category::class);
     }
 
-    public function subcategory(){
-        return $this->belongsTo(SubCategory::class,'id');
+    public function order(){
+        return $this->belongsTo(Order::class);
     }
 }

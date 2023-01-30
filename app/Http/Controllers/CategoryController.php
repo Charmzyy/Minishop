@@ -35,12 +35,23 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category =Category::create([
-         'name'=> $request->input('name'),
-         'gender'=> $request->input('gender')
+        if(!empty($request->input('parent_id'))){
+            //subcategories
+            $category = Category::create([
+                'parent_id' => $request->input('parent_id'),
+                'name' => $request->input('name'),
+                
+            ]);
+        }
+else {
+    # code...
+//main category
+     $category = Category::create([
+        'name' => $request->input('name'),
         ]);
-
-        redirect('category.create')->with('message','Category Added');
+}
+return back()->with('message','Category Added');        
+       
     }
 
     /**

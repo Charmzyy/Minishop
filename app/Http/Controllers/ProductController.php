@@ -33,21 +33,25 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function store(Request $request)
     {
         $file=$request->file('image_path');
         $filename=time() .". {$file->guessClientextension()}";
         $file->move('images',$filename);
          
-        $product = Product::create([
-         'sub_id' => $request->input('sub_id'),
-         'name' => $request->input('name'),
-         'price'=> $request->input('price'),
-         'image_path'=> $request->$filename,
-         
         
-        ]);
-    }
+            $product = Product::create([
+                'category_id' => $request->input('category_id'),
+                'name' => $request->input('name'),
+                'price'=> $request->input('price'),
+                'quantity'=>$request->input('quantity'),
+                'image_path'=> $request->$filename,
+                'type'=>$request->input('type')
+            ]);
+        
+
+}
 
     /**
      * Display the specified resource.
@@ -83,9 +87,11 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $data = [
-            'sub_id' => $request->input('sub_id'),
+            'category_id' => $request->input('category_id'),
             'name' => $request->input('name'),
-            'price'=> $request->input('price')
+            'price'=> $request->input('price'),
+            'quantity'=>$request->input('quantity'),
+            'type'=>$request->input('type')
         ]; 
 
         if ($request->hasFile('image_path')) {
