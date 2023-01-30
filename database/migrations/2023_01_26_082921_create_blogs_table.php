@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('order_items', function (Blueprint $table) {
+        Schema::create('blogs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
-            $table->string('product_name');
-            $table->unsignedBigInteger('order_id');
-            $table->integer('quantity');
-            $table->integer('price');
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('order_id')->refrences('id')->on('orders');
+       
+            $table->string('heading');
+            $table->text('title');
             $table->timestamps();
         });
     }
