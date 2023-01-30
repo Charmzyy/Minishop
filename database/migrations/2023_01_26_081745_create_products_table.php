@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('image_path');
             $table->string('type');
             $table->jsonb('likes')->nullable();
-            $table->foreign('category_id')->refrences('id')->on('categories');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();
         });
     }

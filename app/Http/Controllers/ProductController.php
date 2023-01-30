@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -23,8 +24,10 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('product.create');
+    { #
+        $products = Product::all();
+        $categories = Category::all();
+    return view('product.create', compact('categories'));
     }
 
     /**
@@ -36,17 +39,18 @@ class ProductController extends Controller
     
     public function store(Request $request)
     {
+       
         $file=$request->file('image_path');
         $filename=time() .". {$file->guessClientextension()}";
-        $file->move('images',$filename);
+        $file->move('products/images',$filename);
          
         
             $product = Product::create([
                 'category_id' => $request->input('category_id'),
-                'name' => $request->input('name'),
+                'product_name' => $request->input('product_name'),
                 'price'=> $request->input('price'),
                 'quantity'=>$request->input('quantity'),
-                'image_path'=> $request->$filename,
+                'image_path'=>$filename,
                 'type'=>$request->input('type')
             ]);
         

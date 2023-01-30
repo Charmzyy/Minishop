@@ -23,9 +23,10 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('category.create');
-    }
+{
+    $categories = Category::all();
+    return view('category.create', compact('categories'));
+}
 
     /**
      * Store a newly created resource in storage.
@@ -35,6 +36,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         if(!empty($request->input('parent_id'))){
             //subcategories
             $category = Category::create([
