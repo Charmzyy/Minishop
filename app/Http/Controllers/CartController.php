@@ -2,124 +2,125 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Http\Request;
-use App\Models\Product;
-
+use App\Models\{Products,Order};
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-{
-    $cart = session()->get('cart', []);
-    $products = Product::whereIn('id', $cart)->get();
-    return view('cart.index', compact('products'));
-}
+	public function addToCart(Request $request){
+
+//IMPORTANT THE AJAX SHOULD HAVE THE SESSION ID AND SHOULD BE ENCRYPTED
+
+	 $item_id = $request->input('item');
+	 $quantity = $request->input('quantity');
+
+	 //check to see if theres a cart present in the current session
+	  
+	 function Add_cart($id,$Quantity){
+
+		 $product = Products::findorfail($id);
+		 $price = $Quantity * $product->price;
+
+		 $cart = session('cart');
+		  array_push($cart,[
+		  	'id'=> $product->id,
+			'name'=>$product->name,
+			'Quantity'=> $Quantity,
+			'price'=>$price,
+		      ]
+		  );
 
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        
-    }
+		  session()->put('cart',$cart);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+	 } 
+	 if ($request->session()->has('cart')){
+               Add_cart($item_id,$quantity);
+		 
+	 }
+	 else{
+	 	$cart = [];
+		session()->put('cart',$cart);
+		Add_cart($item_id,$quantity);
 
-    $cart = session()->get('cart', []);
-    $product_id = $request->input('product_id');
-    $cart[] = $product_id;
-    session()->put('cart', $cart);
-    return redirect();
+	 
+	 }
+	
+	}
 
 
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+	public function viewCart(Request $request){
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-   
+		if ($request->session()->has('cart')){
+		
+			$products = [];
+			$cart = session('cart');
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-   
+			foreach($cart as $item){
+				$product = Products::findorfail($item['id']);
+				array_push($products,$product);
+			 }
 
-    public function update(Request $request, $id)
-{
-    $cart = session()->get('cart', []);
+			return view('cart', ['products' => $products]);
+		}
+		else{
+			$cart=[];
+			session()->put('cart',$cart);
 
-    if (!in_array($id, $cart)) {
-        return redirect()->back()->with('error', 'Product not found in cart');
-    }
+			return view('cart');
 
-    $quantity = $request->input('quantity');
-    $product = Product::find($id);
+		
+		}
+	
+	}
 
-    if ($quantity > $product->stock) {
-        return redirect()->back()->with('error', 'Not enough stock');
-    }
 
-    $cart[$id] = [        'quantity' => $quantity,        'total' => $quantity * $product->price    ];
+	public function makeOrder(Request $request){
 
-    session()->put('cart', $cart);
-    return redirect()->back()->with('success', 'Cart updated');
-}
+		$TOTAL_PRICE=0;
+		$cart = session('cart');
+		foreach($cart as $item){
+			$TOTAL_PRICE  += $item['price'];
+		}
+		$order = Order::create([
+		   'CustomerId'=> request()->user->id,
+		   'price'=>$TOTAL_PRICE
+		]);
+		foreach($cart as $item){
 
-public function destroy($id)
-{
-    $cart = session()->get('cart', []);
+			$order->Cart()->create([
+				'ProductId'=>$item['id'],
+				'Quantity'=> $item['Quantity']
+				
+			]);
+               
+		}
 
-    if (!in_array($id, $cart)) {
-        return redirect()->back()->with('error', 'Product not found in cart');
-    }
+		return ;
+	
+	}
 
-    unset($cart[$id]);
-    session()->put('cart', $cart);
-    return redirect()->back()->with('success', 'Product removed from cart');
-}
+	public function removeItem(Request $request,$id){
+
+		//REMOVE THE SPECIFIC ITEM
+		//
+		$cart = session->get('cart');
+
+		foreach($cart as $item){
+
+			if ($item['id'] === $id){
+
+				$cart;
+			
+			}
+		
+		
+		}
+	
+	
+	}
+
+
 
 }

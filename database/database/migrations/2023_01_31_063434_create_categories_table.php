@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('blogs', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-       
-            $table->string('heading');
-            $table->text('title');
+            $table->string('CategoryName');
+
+            $table->$table->bigInteger('ParentCategory')->nullable();
+            $table->foreign('ParentCategory')->references('id')->on('categories'); 
+                
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_items');
+        Schema::dropIfExists('categories');
     }
 };
