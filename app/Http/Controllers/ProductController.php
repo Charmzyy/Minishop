@@ -16,7 +16,7 @@ class ProductController extends Controller
             $PassedTIme = Carbon::now()->subweeks(2);
 
 	    $products = Product::paginate(20);
-	    $new_arrival = Product::where('created_at','>=',$PassedTime);
+	    $new_arrival = Product::where('created_at','>=',$PassedTime)->get();
 
 	    return view('Products',['products'=>$products,'new_arrival'=>$new_arrival]);
     }
