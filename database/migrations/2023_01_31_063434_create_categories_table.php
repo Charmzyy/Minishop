@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('CategoryName');
 
-            $table->$table->bigInteger('ParentCategory')->nullable();
+            $table->bigInteger('ParentCategory')->nullable();
             $table->foreign('ParentCategory')->references('id')->on('categories'); 
                 
             $table->timestamps();

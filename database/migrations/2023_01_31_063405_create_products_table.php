@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('ProductName');
             
-            $table->$table->bigInteger('CategoryId');
-            $table->foreign('CategorId')->references('id')->on('categories')->onDelete('cascade');
+            $table->bigInteger('CategoryId');
+            $table->foreign('CategoryId')->references('id')->on('categories')->onDelete('cascade');
 
             $table->bigInteger('Quantity');
             $table->float('Price');
