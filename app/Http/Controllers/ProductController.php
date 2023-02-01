@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Products;
 class ProductController extends Controller
@@ -13,10 +13,12 @@ class ProductController extends Controller
      */
     public function index()
     {
+            $PassedTIme = Carbon::now()->subweeks(2);
 
 	    $products = Product::paginate(20);
+	    $new_arrival = Product::where('created_at','>=',$PassedTime);
 
-	    return view('Products',['products'=>$products]);
+	    return view('Products',['products'=>$products,'new_arrival'=>$new_arrival]);
     }
 
 
@@ -24,7 +26,7 @@ class ProductController extends Controller
 
     public function ProductFilter($ProductType,$CategoryId){
 	    
-	    $Products = Products::where('Type','=',$ProductType)->where('CategoryId','=',$CategoryId)->paginate(20);
+	    $Products = Products::where('Type','=',$ProductType)->where('CategoryId','=',$CategoryId)->get()->paginate(20);
 
 	    return view('category view',['products'=> $Products]);
 
