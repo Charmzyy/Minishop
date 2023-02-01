@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Products
+use App\Models\Products;
 class ProductController extends Controller
 {
     /**
@@ -13,9 +13,23 @@ class ProductController extends Controller
      */
     public function index()
     {
+
 	    $products = Product::paginate(20);
 
 	    return view('Products',['products'=>$products]);
+    }
+
+
+
+
+    public function ProductFilter($ProductType,$CategoryId){
+	    
+	    $Products = Products::where('Type','=',$ProductType)->where('CategoryId','=',$CategoryId)->paginate(20);
+
+	    return view('category view',['products'=> $Products]);
+
+    
+    
     }
 
     /**

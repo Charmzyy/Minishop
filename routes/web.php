@@ -1,11 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\SubCategoryController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,14 +14,10 @@ use App\Http\Controllers\SubCategoryController;
 */
 
 Route::get('/', function () {
-    redirect('product.index');
+    return view('welcome');
 });
 
-Route::resource('/category', CategoryController::class);
-Route::resource('/order', OrderController::class);
-Route::resource('/product', ProductController::class);
 
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('products/{ProductType}/{CategoryId}',[ProductController::class,'Productfilter'])->where(['ProductType'=>'/\b(women|men)\b/','CategortId'=> '[0-9]+'])->name('filterproducts');
+Route::resource('products',ProductController::class);
