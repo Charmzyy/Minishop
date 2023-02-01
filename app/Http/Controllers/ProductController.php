@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Product;
-use App\Models\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-
+use App\Models\Products;
 class ProductController extends Controller
 {
     /**
@@ -15,7 +13,25 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('product.index');
+            $PassedTIme = Carbon::now()->subweeks(2);
+
+	    $products = Product::paginate(20);
+	    $new_arrival = Product::where('created_at','>=',$PassedTime)->get();
+
+	    return view('Products',['products'=>$products,'new_arrival'=>$new_arrival]);
+    }
+
+
+
+
+    public function ProductFilter($ProductType,$CategoryId){
+	    
+	    $Products = Products::where('Type','=',$ProductType)->where('CategoryId','=',$CategoryId)->get()->paginate(20);
+
+	    return view('category view',['products'=> $Products]);
+
+    
+    
     }
 
     /**
@@ -24,10 +40,8 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    { #
-        $products = Product::all();
-        $categories = Category::all();
-    return view('product.create', compact('categories'));
+    {
+        //return a form
     }
 
     /**
@@ -36,26 +50,28 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    
     public function store(Request $request)
     {
-       
-        $file=$request->file('image_path');
-        $filename=time() .". {$file->guessClientextension()}";
-        $file->move('products/images',$filename);
-         
-        
-            $product = Product::create([
-                'category_id' => $request->input('category_id'),
-                'product_name' => $request->input('product_name'),
-                'price'=> $request->input('price'),
-                'quantity'=>$request->input('quantity'),
-                'image_path'=>$filename,
-                'type'=>$request->input('type')
-            ]);
-        
+	    $validateData = request->validate([
+	         
+		    'ProductName'=>['required','alpha'],
+		    'CategoryId'=>['required'],
+		   'Quantity'=>['required'],
+		   'Type'=>['required'],
+		   'Price'=>['required']
+	    
+	    ]);
 
-}
+
+	    $product = new Products;
+	    $product->ProductName = $request->input('ProductName');
+	    $product->CategoryId = $request->input('CategoryId');
+	    $prodcut->Quantity  = $request->input('Quantity');
+	    $product->Price = $request->input('Price');
+	    $product->Type = $request->input('Type');
+
+	    $product->save();
+    }
 
     /**
      * Display the specified resource.
@@ -65,7 +81,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        
+	    $product = Product::findorfail($id);
+
+	    return view('productdetail',['product'=>$product]);
     }
 
     /**
@@ -76,9 +94,10 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        return view('product.edit',[
-            'product'=>Product::where('id',$id)->first()
-        ]);
+	    //return the product
+	    $product = Products::findorfail($id);
+
+	    return view('edit',['product',$product]);
     }
 
     /**
@@ -90,24 +109,30 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = [
-            'category_id' => $request->input('category_id'),
-            'name' => $request->input('name'),
-            'price'=> $request->input('price'),
-            'quantity'=>$request->input('quantity'),
-            'type'=>$request->input('type')
-        ]; 
 
-        if ($request->hasFile('image_path')) {
-            $file = $request->file('image_path');
-            $filename = time() . ".{$file->guessClientExtension()}";
-            $file->move('images', $filename);
-            $data['image_path'] = $filename;
-        }
+	    $validateData = request->validate([
+	         
+		    'ProductName'=>['required','alpha'],
+		    'CategoryId'=>['required'],
+		   'Quantity'=>['required'],
+		   'Type'=>['required'],
+		   'Price'=>['required']
+	    
+	    ]);
 
-        Product::where('id',$id)->update($data);
 
-        return back()->with('product_edit','Product was updated succesfully');
+	    $product = Products::findorfail($id);
+	    $product->ProductName = $request->input('ProductName');
+	    $product->CategoryId = $request->input('CategoryId');
+	    $prodcut->Quantity  = $request->input('Quantity');
+	    $product->Price = $request->input('Price');
+	    $product->Type = $request->input('Type');
+
+	    $product->save();
+
+
+
+
     }
 
     /**
@@ -118,6 +143,6 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        Product::destroy($id);
+        //
     }
 }
