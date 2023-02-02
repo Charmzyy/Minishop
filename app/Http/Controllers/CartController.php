@@ -10,8 +10,8 @@ class CartController extends Controller
 
 //IMPORTANT THE AJAX SHOULD HAVE THE SESSION ID AND SHOULD BE ENCRYPTED
 
-	 $item_id = $request->input('item');
-	 $quantity = $request->input('quantity');
+		$item_id = $request->input('item');
+       		$quantity = $request->input('quantity',1);
 
 	 //check to see if theres a cart present in the current session
 	  
@@ -54,50 +54,60 @@ class CartController extends Controller
 
 		if ($request->session()->has('cart')){
 		
+		
 			$products = [];
 			$cart = session('cart');
+			$Total_price = 0;
 
 			foreach($cart as $item){
 				$product = Products::findorfail($item['id']);
+				$Total_price += $product->Price;
 				array_push($products,$product);
 			 }
 
-			return view('cart', ['products' => $products]);
-		}
-		else{
+			return view('Cart.cart',['products' => $products,'total'=>$Total_price]);
+		}else{
 			$cart=[];
 			session()->put('cart',$cart);
-
-			return view('cart');
+			$cart = session('cart');
+  
+		//HAVE TO TELL USER TO ADD ITEMS TO CART	
+			return view('Cart.cart',['cart'=>$cart]);
+		    }
 
 		
-		}
 	
 	}
 
 
 	public function makeOrder(Request $request){
+              if(session()->has('cart')){
 
-		$TOTAL_PRICE=0;
-		$cart = session('cart');
-		foreach($cart as $item){
-			$TOTAL_PRICE  += $item['price'];
-		}
-		$order = Order::create([
-		   'CustomerId'=> request()->user->id,
-		   'price'=>$TOTAL_PRICE
-		]);
-		foreach($cart as $item){
+		      $TOTAL_PRICE=0;
+		      $cart = session('cart');
+		      
+		      foreach($cart as $item){
+			      $TOTAL_PRICE  += $item['price'];
+		      }
+			  
+		      $order = Order::create([
+			      
+			      'CustomerId'=> request()->user->id,
+			      'Price'=>$TOTAL_PRICE  
+		      ]);
+		    
+		      foreach($cart as $item){
 
-			$order->Cart()->create([
-				'ProductId'=>$item['id'],
-				'Quantity'=> $item['Quantity']
-				
-			]);
+			      $order->Cart()->create([
+				      'ProductId'=>$item['id'],     
+				      'Quantity'=> $item['Quantity']		
+			      ]);
                
-		}
+		      }
+	      }
 
-		return ;
+
+		return view('Cart.checkout',[$TOTAL_PRICE]);
 	
 	}
 

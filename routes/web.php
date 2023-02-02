@@ -20,10 +20,10 @@ Route::get('/', function () {
 
 
 Route::get('products/{ProductType}/{CategoryId}',[ProductController::class,'Productfilter'])->where(['ProductType'=>'/\b(women|men)\b/','CategortId'=> '[0-9]+'])->name('filterproducts');
-Route::resource('products',ProductController::class);
+Route::resource('Products',ProductController::class);
 
 //CART ROUTES
 //Recieves an ajax request
 Route::post('AddToCart',[CartController::class,'addToCart'])->name('AddToCart');
 Route::get('ViewCart',[CartController::class,'viewCart'])->name('ViewCart');
-Route::post('MakeOrder',[CartController::class,'makeOrder'])->name('MakeOrder');
+Route::get('MakeOrder',[CartController::class,'makeOrder'])->name('MakeOrder');

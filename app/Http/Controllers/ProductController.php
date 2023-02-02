@@ -13,12 +13,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-            $PassedTIme = Carbon::now()->subweeks(2);
+            $PassedTime = Carbon::now()->subweeks(2);
 
-	    $products = Product::paginate(20);
-	    $new_arrival = Product::where('created_at','>=',$PassedTime)->get();
+	    $products = Products::paginate(8);
+	    $new_arrival = Products::where('created_at','>=',$PassedTime)->get();
 
-	    return view('Products',['products'=>$products,'new_arrival'=>$new_arrival]);
+	    return view('Products.shop',['products'=>$products,'new_arrival'=>$new_arrival]);
     }
 
 
@@ -81,9 +81,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-	    $product = Product::findorfail($id);
+	    $product = Products::findorfail($id);
 
-	    return view('productdetail',['product'=>$product]);
+	    return view('Products.product-single',['product'=>$product]);
     }
 
     /**
