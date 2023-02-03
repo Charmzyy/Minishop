@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{ProductController,CartController};
+use App\Http\Controllers\{ProductController,CartController,CategoryController};
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,11 +19,11 @@ Route::get('/', function () {
 
 
 
-Route::get('products/{ProductType}/{CategoryId}',[ProductController::class,'Productfilter'])->where(['ProductType'=>'/\b(women|men)\b/','CategortId'=> '[0-9]+'])->name('filterproducts');
-Route::resource('products',ProductController::class);
-
+Route::get('products/{ProductType}/{CategoryId}',[ProductController::class,'Productfilter'])->name('filterproducts');
+Route::resource('Products',ProductController::class);
+Route::resource('category',CategoryController::class);
 //CART ROUTES
 //Recieves an ajax request
 Route::post('AddToCart',[CartController::class,'addToCart'])->name('AddToCart');
 Route::get('ViewCart',[CartController::class,'viewCart'])->name('ViewCart');
-Route::post('MakeOrder',[CartController::class,'makeOrder'])->name('MakeOrder');
+Route::get('MakeOrder',[CartController::class,'makeOrder'])->name('MakeOrder');

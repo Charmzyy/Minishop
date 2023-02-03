@@ -13,12 +13,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-            $PassedTIme = Carbon::now()->subweeks(2);
+            $PassedTime = Carbon::now()->subweeks(2);
 
-	    $products = Product::paginate(20);
-	    $new_arrival = Product::where('created_at','>=',$PassedTime)->get();
+	    $products = Products::paginate(8);
+	    $new_arrival = Products::where('created_at','>=',$PassedTime)->get();
 
-	    return view('Products',['products'=>$products,'new_arrival'=>$new_arrival]);
+	    return view('Products.shop',['products'=>$products,'new_arrival'=>$new_arrival]);
     }
 
 
@@ -26,9 +26,9 @@ class ProductController extends Controller
 
     public function ProductFilter($ProductType,$CategoryId){
 	    
-	    $Products = Products::where('Type','=',$ProductType)->where('CategoryId','=',$CategoryId)->get()->paginate(20);
+	    $Products = Products::where('Type',$ProductType)->where('CategoryId',$CategoryId)->get();//->paginate(20);
 
-	    return view('category view',['products'=> $Products]);
+	    return view('category.view',['products'=> $Products]);
 
     
     
@@ -41,7 +41,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //return a form
+        return view('Products.create');
     }
 
     /**
@@ -52,7 +52,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-	    $validateData = request->validate([
+	    $validateData = $request->validate([
 	         
 		    'ProductName'=>['required','alpha'],
 		    'CategoryId'=>['required'],
@@ -66,7 +66,7 @@ class ProductController extends Controller
 	    $product = new Products;
 	    $product->ProductName = $request->input('ProductName');
 	    $product->CategoryId = $request->input('CategoryId');
-	    $prodcut->Quantity  = $request->input('Quantity');
+	    $product->Quantity  = $request->input('Quantity');
 	    $product->Price = $request->input('Price');
 	    $product->Type = $request->input('Type');
 
@@ -81,9 +81,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-	    $product = Product::findorfail($id);
+	    $product = Products::findorfail($id);
 
-	    return view('productdetail',['product'=>$product]);
+	    return view('Products.product-single',['product'=>$product]);
     }
 
     /**
@@ -97,7 +97,7 @@ class ProductController extends Controller
 	    //return the product
 	    $product = Products::findorfail($id);
 
-	    return view('edit',['product',$product]);
+	    return view('edit',['products'=>$product]);
     }
 
     /**
@@ -110,7 +110,7 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
 
-	    $validateData = request->validate([
+	    $validateData = $request->validate([
 	         
 		    'ProductName'=>['required','alpha'],
 		    'CategoryId'=>['required'],
@@ -124,7 +124,7 @@ class ProductController extends Controller
 	    $product = Products::findorfail($id);
 	    $product->ProductName = $request->input('ProductName');
 	    $product->CategoryId = $request->input('CategoryId');
-	    $prodcut->Quantity  = $request->input('Quantity');
+	    $product->Quantity  = $request->input('Quantity');
 	    $product->Price = $request->input('Price');
 	    $product->Type = $request->input('Type');
 
