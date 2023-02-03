@@ -107,7 +107,7 @@ class CartController extends Controller
 	      }
 
 
-		return view('Cart.checkout',[$TOTAL_PRICE]);
+		return view('Cart.checkout',['total_price'=>$TOTAL_PRICE]);
 	
 	}
 

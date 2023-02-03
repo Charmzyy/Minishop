@@ -303,7 +303,7 @@
                          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                              <div class="panel-body">
                                  <ul>
-                                 	<li><a href="#">Sport</a></li>
+                                 	<li><a href="{{ Route('filterproducts',['ProductType'=>'men','CategoryId'=>'5']) }}">Sport</a></li>
                                  	<li><a href="#">Casual</a></li>
                                  	<li><a href="#">Running</a></li>
                                  	<li><a href="#">Jordan</a></li>
@@ -324,7 +324,7 @@
                          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                              <div class="panel-body">
                                 <ul>
-                                 	<li><a href="#">Sport</a></li>
+                                 	<li><a href="{{ Route('filterproducts',['ProductType'=>'women','CategoryId'=>'5']) }}">Sport</a></li>
                                  	<li><a href="#">Casual</a></li>
                                  	<li><a href="#">Running</a></li>
                                  	<li><a href="#">Jordan</a></li>
