@@ -10,7 +10,10 @@ class Cart extends Model
 	use HasFactory;
 
 
+protected $fillable =[
 
+	
+];
 
 
 	public function Order(){

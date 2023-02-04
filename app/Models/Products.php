@@ -10,7 +10,16 @@ class Products extends Model
 	use HasFactory;
 
 
-
+protected $fillable = [
+	'category_id',
+	'name',
+	'description',
+	'manufacturer',
+	'price',
+	'quantity',
+	'type',
+	'image_path'
+];
 
 
 	public function Cart(){
@@ -24,5 +33,8 @@ class Products extends Model
 		return $this->belongsTo(Category::class);
 
 	}
-
+ 
+	public function reviews(){
+		return $this->hasMany(Reviews::class);
+	}
 }

@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header">Dashboard</div>
                 <div class="card-body">
-                    You don't seem to be an admin!
+                    Hey! you are admin.
                 </div>
             </div>
         </div>

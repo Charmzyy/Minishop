@@ -15,11 +15,9 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-
-            $table->bigInteger('CustomerId');
-            $table->foreign('CustomerId')->references('id')->on('users');
-            $table->float('Price');
-            
+            $table->unsignedBigInteger('user_id');
+            $table->float('total_price');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{ProductController,CartController};
+use App\Http\Controllers\{ProductController,CartController,CategoryController};
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,16 +14,33 @@ use App\Http\Controllers\{ProductController,CartController};
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route('product.index'));
 });
+Route::get('/about',[ProductController::class,'about'])->name('about');
+Route::get('/contact',[ProductController::class,'contact'])->name('contact');
+Route::get('/blog',[ProductController::class,'blog'])->name('blog');
+Route::get('/allproducts',[ProductController::class,'all'])->name('all');
+Route::post('/placeorder',[ProductController::class,'placeorder'])->middleware('auth')->name('placeorder');
+Route::post('/storereview',[ProductController::class,'storereview'])->middleware('auth')->name('storereview');
 
+Route::get('/product/{category_id}/{type}', [ProductController::class,'filter'])->name('filter');
 
+Route::resource('/product',ProductController::class)->middleware('auth','admin');
 
-Route::get('products/{ProductType}/{CategoryId}',[ProductController::class,'Productfilter'])->where(['ProductType'=>'/\b(women|men)\b/','CategortId'=> '[0-9]+'])->name('filterproducts');
-Route::resource('products',ProductController::class);
-
+Route::resource('/category', CategoryController::class)->middleware('auth','admin');
+Route::get('/cart',[ProductController::class,'cart'])->name('cart');
+ Route::get('/product/{category_id}',[ProductController::class,'Productfilter'])->name('filterproducts');
 //CART ROUTES
 //Recieves an ajax request
-Route::post('AddToCart',[CartController::class,'addToCart'])->name('AddToCart');
-Route::get('ViewCart',[CartController::class,'viewCart'])->name('ViewCart');
+Route::get('/addtocart/{id}',[ProductController::class,'addToCart'])->name('addtocart');
+
 Route::post('MakeOrder',[CartController::class,'makeOrder'])->name('MakeOrder');
+
+Route::delete('/cart/{id}', [App\Http\Controllers\ProductController::class, 'remove'])->name('removeitem');
+
+
+Route::get('/checkout',[App\Http\Controllers\ProductController::class,'checkout'])->name('checkout');
+
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('admin/home', [App\Http\Controllers\HomeController::class,'handleAdmin'])->name('admin.route')->middleware('admin');

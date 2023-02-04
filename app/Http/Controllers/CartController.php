@@ -10,13 +10,13 @@ class CartController extends Controller
 
 //IMPORTANT THE AJAX SHOULD HAVE THE SESSION ID AND SHOULD BE ENCRYPTED
 
-	 $item_id = $request->input('item');
-	 $quantity = $request->input('quantity');
+	 $item_id = $request->input('item',1);
+	 $quantity = $request->input('quantity',1);
 
 	 //check to see if theres a cart present in the current session
 	  
 	 function Add_cart($id,$Quantity){
-
+dd(session('cart'));
 		 $product = Products::findorfail($id);
 		 $price = $Quantity * $product->price;
 
@@ -44,6 +44,7 @@ class CartController extends Controller
 
 	 
 	 }
+	 return back()->with('cart','Product added to cart');
 	
 	}
 
@@ -101,25 +102,25 @@ class CartController extends Controller
 	
 	}
 
-	public function removeItem(Request $request,$id){
+	// public function removeItem(Request $request,$id){
 
-		//REMOVE THE SPECIFIC ITEM
-		//
-		$cart = session->get('cart');
+	// 	//REMOVE THE SPECIFIC ITEM
+	// 	//
+	// 	$cart = session->get('cart');
 
-		foreach($cart as $item){
+	// 	foreach($cart as $item){
 
-			if ($item['id'] === $id){
+	// 		if ($item['id'] === $id){
 
-				$cart;
+	// 			$cart;
 			
-			}
+	// 		}
 		
 		
-		}
+	// 	}
 	
 	
-	}
+	// }
 
 
 
