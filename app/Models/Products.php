@@ -37,4 +37,7 @@ protected $fillable = [
 	public function reviews(){
 		return $this->hasMany(Reviews::class);
 	}
+	public function ratings(){
+		return $this->hasMany(Rating::class);
+	}
 }

@@ -1,10 +1,12 @@
 @extends('layouts.main')
 @section('content')
+
+
 <div class="hero-wrap hero-bread" style="background-image: url('images/bg_6.jpg');">
     <div class="container">
       <div class="row no-gutters slider-text align-items-center justify-content-center">
         <div class="col-md-9 ftco-animate text-center">
-            <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Shop</span></p>
+            <p class="breadcrumbs"><span class="mr-2"><a href="{{ Route('product.index') }}">Home</a></span> <span>Shop</span></p>
           <h1 class="mb-0 bread">Shop</h1>
         </div>
       </div>
@@ -16,8 +18,8 @@
         <div class="row">
             <div class="col-md-8 col-lg-10 order-md-last">
                 <div class="row">
-                    @if($products->count()>0)
-                    @foreach ($products as $product)
+                    @if($searched->count()>0)
+                    @foreach ($searched as $product)
                     <div class="col-sm-12 col-md-12 col-lg-4 ftco-animate d-flex">
                         <div class="product d-flex flex-column">
                             <a href="{{ Route('product.show',$product->id) }}" class="img-prod"><img style="height:20px width:10px"class="img-fluid" src="{{ asset('images/'.$product->image_path) }}" alt="Colorlib Template">
@@ -44,7 +46,7 @@
                                 </div>
                                 <p class="bottom-area d-flex px-3">
                                     <a href="{{ Route('addtocart',$product->id) }}" class="add-to-cart text-center py-2 mr-1"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-                                    <a href="#" class="buy-now text-center py-2">Buy now<span><i class="ion-ios-cart ml-1"></i></span></a>
+                                  
                                 </p>
                             </div>
                         </div>
@@ -53,7 +55,7 @@
                         
                     @else
                    
-                    <div class="error-message">Sorry Out of stock</div>
+                    <div class="error-message">No products within this range/div>
                     
                     @endif
                     
@@ -183,7 +185,7 @@
                           <i class="icon icon-arrow-down3"></i>
                           <select name="price_from" id="people" class="form-control">
                             <option value="1">1</option>
-                            <option value="50">50</option>
+                            <option value="200">200</option>
                             <option value="300">300</option>
                             <option value="400">400</option>
                             <option value="1000">1000</option>
@@ -197,7 +199,7 @@
                         <div class="form-field">
                           <i class="icon icon-arrow-down3"></i>
                           <select name="price_to" id="people" class="form-control">
-                            <option value="100">100</option>
+                            <option value="2000">2000</option>
                             <option value="4000">4000</option>
                             <option value="6000">6000</option>
                             <option value="8000">8000</option>
@@ -273,3 +275,6 @@
       </div>
   </section>
 @endsection
+
+
+

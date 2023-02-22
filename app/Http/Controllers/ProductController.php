@@ -9,6 +9,7 @@ use App\Models\Products;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Reviews;
+use PhpParser\Node\Stmt\TryCatch;
 
 class ProductController extends Controller
 {
@@ -20,23 +21,47 @@ class ProductController extends Controller
     public function index()
     {
             $PassedTime = Carbon::now()->subweeks(2);
+            $currentDate = Carbon::now();
+
+$startOfMonth = $currentDate->copy()->startOfMonth();
+$endOfMonth = $currentDate->copy()->endOfMonth();
+
+
+$deal_Product = Products::whereBetween('created_at', [$startOfMonth, $endOfMonth])->where('price','<=',7)
+    ->get();
+    $firstProduct = $deal_Product->first();
+$lastProduct = $deal_Product->last();
+
+$dealDuration = $lastProduct->created_at->diffInDays($firstProduct->created_at);
+
+
 
 	    $products = Products::paginate(20);
 	    $new_arrival = Products::where('created_at','>=',$PassedTime)->get();
 
-	    return view('product.index',['products'=>$products,'new_arrival'=>$new_arrival]);
+
+	    return view('product.index',['products'=>$products,'new_arrival'=>$new_arrival,'deal_Product'=>$deal_Product,'dealDuration'=>$dealDuration]);
+    }
+
+    public function typefilter($type)
+    {
+        try {
+            //code...
+            $products = Products::where('type', $type)
+                         ->get();
+
+        return view('product.all', compact('products'));
+
+        } catch (\Throwable $th) {
+            return view('product.all', ['products' => $products])->with('stock','Sorry we are out of stock check in 5 days');
+            
+        }
+       
+        
     }
 
 
-
-
-    public function ProductFilter($category_id){
-	    
-	    $products = Products::where('category_id','=',$category_id)->get();
-          
-        return view('product.all',compact('products')) ;
-    
-    }
+   
     public function filter($category_id, $type)
     {
         try {
@@ -164,10 +189,31 @@ return back()->with('added','Product added successfully');
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function all(){
-        $products =Products::paginate(5);
-        return view('product.all',compact('products'));
+    public function pricefilter(Request $request){
+        $min_price = (int)$request->input('price_from');
+        $max_price =(int)$request->input('price_to');
+
+        $searched = Products::whereBetween('price', [$min_price, $max_price])->get();
+        return view('product.searched',compact('searched'));
     }
+
+    // public function saveRating(Request $request){
+    //     $rating = $request->input('rating');
+    //     $product_id = $request->input('product_id');
+    
+    //     // save the rating and product ID in the database or perform other actions
+    // }
+    
+    public function allproducts(){
+        // dd($request);
+       
+        
+        $products =Products::get();
+    
+         return view('product.all',compact('products'));}
+        
+         
+    
     public function destroy($id)
     {
         
@@ -217,6 +263,7 @@ public function addtocart($id){
                 'quantity' => 1,
                 'price' => $product->price,
                 'image_path' =>$product->image_path
+                
             ]
             ];
             session()->put('cart',$cart);
@@ -237,9 +284,43 @@ public function addtocart($id){
         'quantity' => 1,
         'price' => $product->price,
         'image_path' => $product->image_path
+        
+        
        ];
        session()->put('cart',$cart);
        return back()->with('success','Product added to cart');
+}
+public function buy($id){
+
+    $product = Products::findOrfail($id);
+
+        if(!$product){
+//no produt with the id exist
+            return 'no product like that';
+        }
+        
+//  dd($product->name);
+      $cart = session()->get('cart');
+
+      if(!$cart){
+        //if cart is empty
+        $cart = [
+            $id=>[
+                'name' => $product->name,
+                'quantity' => 1,
+                'price' => $product->price,
+                'image_path' =>$product->image_path
+                
+            ]
+            ];
+            session()->put('cart',$cart);
+
+            return view('cart');
+      }
+      
+       
+
+       
 }
 public function remove($id){
     $cart = session()->get('cart');

@@ -19,17 +19,20 @@ Route::get('/', function () {
 Route::get('/about',[ProductController::class,'about'])->name('about');
 Route::get('/contact',[ProductController::class,'contact'])->name('contact');
 Route::get('/blog',[ProductController::class,'blog'])->name('blog');
-Route::get('/allproducts',[ProductController::class,'all'])->name('all');
+Route::get('/allproducts',[ProductController::class,'allproducts'])->name('all');
+Route::post('/searchedproducts',[ProductController::class,'pricefilter'])->name('search');
 Route::post('/placeorder',[ProductController::class,'placeorder'])->middleware('auth')->name('placeorder');
 Route::post('/storereview',[ProductController::class,'storereview'])->middleware('auth')->name('storereview');
 
-Route::get('/product/{category_id}/{type}', [ProductController::class,'filter'])->name('filter');
 
-Route::resource('/product',ProductController::class)->middleware('auth','admin');
+Route::get('/products/{type}', [ProductController::class,'typefilter'])->name('typefilter');
+Route::get('/products/{category_id}/{type}', [ProductController::class,'filter'])->name('filter');
 
-Route::resource('/category', CategoryController::class)->middleware('auth','admin');
+Route::resource('/product',ProductController::class);
+
+Route::resource('/category', CategoryController::class);
 Route::get('/cart',[ProductController::class,'cart'])->name('cart');
- Route::get('/product/{category_id}',[ProductController::class,'Productfilter'])->name('filterproducts');
+ Route::get('/category/{category_id}',[ProductController::class,'categoryfilter'])->name('categoryfilter');
 //CART ROUTES
 //Recieves an ajax request
 Route::get('/addtocart/{id}',[ProductController::class,'addToCart'])->name('addtocart');

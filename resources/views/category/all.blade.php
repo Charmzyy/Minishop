@@ -1,17 +1,18 @@
 @extends('layouts.main')
 @section('content')
-<div class="hero-wrap hero-bread" style="background-image: url('images/bg_6.jpg');">
+
+  <div class="hero-wrap hero-bread" style="background-image: url('images/bg_6.jpg');">
     <div class="container">
       <div class="row no-gutters slider-text align-items-center justify-content-center">
         <div class="col-md-9 ftco-animate text-center">
-            <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Shop</span></p>
+            <p class="breadcrumbs"><span class="mr-2"><a href="{{ Route('product.index') }}">Home</a></span> <span>Shop</span></p>
           <h1 class="mb-0 bread">Shop</h1>
         </div>
       </div>
     </div>
-  </div>
+  </div> 
 
-  <section class="ftco-section bg-light">
+   <section class="ftco-section bg-light">
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-lg-10 order-md-last">
@@ -29,13 +30,13 @@
                                         <span>{{ $product->category->name }}</span>
                                     </div>
                                     <div class="rating">
-                                        {{-- <p class="text-right mb-0">
+                                        <p class="text-right mb-0">
                                             <a href="#"><span class="ion-ios-star-outline"></span></a>
                                             <a href="#"><span class="ion-ios-star-outline"></span></a>
                                             <a href="#"><span class="ion-ios-star-outline"></span></a>
                                             <a href="#"><span class="ion-ios-star-outline"></span></a>
                                             <a href="#"><span class="ion-ios-star-outline"></span></a>
-                                        </p> --}}
+                                        </p>
                                     </div>
                                 </div>
                                 <h3><a href="{{ Route('product.show',$product->id) }}">{{ $product->name }}</a></h3>
@@ -56,7 +57,6 @@
                     <div class="error-message">Sorry Out of stock</div>
                     
                     @endif
-                    
                     
       
 
@@ -98,14 +98,14 @@
                               
                                 {{-- <a href="{{ route('filter', ['category_id' => $category->id, 'type' => 'new_arrival']) }}">New Arrivals</a> --}}
 
-                                 <li><a href="{{ Route('filter',['category_id'=>4,'type'=>'men']) }}">Sport</a>
+                                  <li><a href="{{ Route('filter',['category_id'=>4,'type'=>'men']) }}">Sport</a>
                                  </li>
                                  <li><a href="{{ Route('filter',['category_id'=>6,'type'=>'men']) }}">Casual</a></li>
                                  <li><a href="{{ Route('filter',['category_id'=>7,'type'=>'men']) }}">Running</a></li>
                                  <li><a href="{{ Route('filter',['category_id'=>8,'type'=>'men']) }}">Jordan</a></li>
                                  <li><a href="{{ Route('filter',['category_id'=>9,'type'=>'men']) }}">Soccer</a></li>
                                  <li><a href="{{ Route('filter',['category_id'=>10,'type'=>'men']) }}">Football</a></li>
-                                 <li><a href="{{ Route('filter',['category_id'=>5,'type'=>'men']) }}">Lifestyle</a></li>
+                                 <li><a href="{{ Route('filter',['category_id'=>5,'type'=>'men']) }}">Lifestyle</a></li> --}}
                              </ul>
                          </div>
                      </div>
@@ -142,10 +142,10 @@
                      <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                          <div class="panel-body">
                             <ul>
-                                 <li><a href="{{ Route('filter',['category_id'=>11,'type' =>'watches']) }}">Watches</a></li>
-                                 <li><a href="{{ Route('filter',['category_id'=>12,'type' =>'sunglasses']) }}">Sun glasses</a></li>
-                                 <li><a href="{{ Route('filter',['category_id'=>13,'type' =>'belts']) }}">Belts</a></li>
-                                 <li><a href="{{ Route('filter',['category_id'=>14,'type' =>'jewellery']) }}">Jewellery</a></li>
+                                 <li><a href="{{ Route('categoryfilter',['category_id'=>11]) }}">Watches</a></li>
+                                 <li><a href="{{ Route('categoryfilter',['category_id'=>12]) }}">Sun glasses</a></li>
+                                 <li><a href="{{ Route('categoryfilter',['category_id'=>13]) }}">Belts</a></li>
+                                 <li><a href="{{ Route('categoryfilter',['category_id'=>14]) }}">Jewellery</a></li>
                              </ul>
                          </div>
                      </div>
@@ -160,33 +160,32 @@
                      <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                          <div class="panel-body">
                             <ul>
-                                 <li><a href="{{ Route('filter',['category_id'=>15,'type' =>'jeans']) }}">Jeans</a></li>
-                                 <li><a href="{{ Route('filter',['category_id'=>16,'type' =>'tshirt']) }}">T-Shirt</a></li>
-                                 <li><a href="{{ Route('filter',['category_id'=>17,'type' =>'jacket']) }}">Jacket</a></li>
-                                 <li><a href="{{ Route('filter',['category_id'=>18,'type' =>'track']) }}">Track suits</a></li>
+                                 <li><a href="{{ Route('categoryfilter',['category_id'=>15]) }}">Jeans</a></li>
+                                 <li><a href="{{ Route('categoryfilter',['category_id'=>16]) }}">T-Shirt</a></li>
+                                 <li><a href="{{ Route('categoryfilter',['category_id'=>17]) }}">Jacket</a></li>
+                                 <li><a href="{{ Route('categoryfilter',['category_id'=>18]) }}">Track suits</a></li>
                              </ul>
                          </div>
                      </div>
                  </div>
               </div>
-           </div>
+            </div> 
                         </div>
                         <div class="sidebar-box-2">
                             <h2 class="heading">Price Range</h2>
-                            <form action="{{ Route('search') }}"method="POST"  class="colorlib-form-2">
-                                @csrf
+                            <form method="post" class="colorlib-form-2">
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
                         <label for="guests">Price from:</label>
                         <div class="form-field">
                           <i class="icon icon-arrow-down3"></i>
-                          <select name="price_from" id="people" class="form-control">
-                            <option value="1">1</option>
-                            <option value="50">50</option>
-                            <option value="300">300</option>
-                            <option value="400">400</option>
-                            <option value="1000">1000</option>
+                          <select name="people" id="people" class="form-control">
+                            <option value="#">1</option>
+                            <option value="#">200</option>
+                            <option value="#">300</option>
+                            <option value="#">400</option>
+                            <option value="#">1000</option>
                           </select>
                         </div>
                       </div>
@@ -196,27 +195,27 @@
                         <label for="guests">Price to:</label>
                         <div class="form-field">
                           <i class="icon icon-arrow-down3"></i>
-                          <select name="price_to" id="people" class="form-control">
-                            <option value="100">100</option>
-                            <option value="4000">4000</option>
-                            <option value="6000">6000</option>
-                            <option value="8000">8000</option>
-                            <option value="10000">10000</option>
+                          <select name="people" id="people" class="form-control">
+                            <option value="#">2000</option>
+                            <option value="#">4000</option>
+                            <option value="#">6000</option>
+                            <option value="#">8000</option>
+                            <option value="#">10000</option>
                           </select>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <button type="submit">Search</button>
                 </form>
                         </div>
                     </div>
             </div>
         </div>
     </div>
-</section>
+ </section>   
+
       
-      <section class="ftco-gallery">
+       <section class="ftco-gallery">
       <div class="container">
           <div class="row justify-content-center">
               <div class="col-md-8 heading-section text-center mb-4 ftco-animate">
@@ -271,5 +270,5 @@
                   </div>
       </div>
       </div>
-  </section>
+  </section> 
 @endsection

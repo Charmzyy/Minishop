@@ -74,9 +74,9 @@
               <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catalog</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
               	<a class="dropdown-item" href="{{ Route('all') }}">Shop</a>
-                <a class="dropdown-item" href="">Single Product</a>
+               
                 <a class="dropdown-item" href="{{ Route('cart') }}">Cart</a>
-                <a class="dropdown-item" href="">Checkout</a>
+                <a class="dropdown-item" href="{{ Route('checkout') }}">Checkout</a>
               </div>
             </li>
 	          <li class="nav-item"><a href="{{ Route('about') }}" class="nav-link">About</a></li>
@@ -200,6 +200,23 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 <script src="{{ asset('js/google-map.js') }}"></script>
 <script src="{{ asset('js/main.js') }}"></script>
+<script> $('.ion-ios-star-outline').click(function(){
+  var rating = $(this).data('rating');
+  var product_id = $(this).data('product-id');
+
+  $.ajax({
+      url: '/save-rating',
+      type: 'post',
+      data: {
+          rating: rating,
+          product_id: product_id
+      },
+      success: function(response){
+          // handle the response from the server
+      }
+  });
+});
+</script>
 {{-- <script>
   $(document).ready(function(){
       $('.quantity-right-plus').click(function(e){

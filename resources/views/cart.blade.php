@@ -55,8 +55,10 @@
                                 
                           
                           </td>
-                          <td class="image-prod"><div class="img" style="background-image"> 
-                            {{-- <img src={{ asset('images/'.$details['image_path'])}}> --}}
+                          <td class="image-prod"><div class="img"> 
+                        
+
+                            {{-- /* <img src={{ asset('images/'.$details['image_path'])}}> */ --}}
                         </div>
                     </td>                                       
                                   {{-- Debug message to check if $details is populated correctly --}}

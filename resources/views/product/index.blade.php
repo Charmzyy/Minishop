@@ -5,45 +5,40 @@
 
     <section id="home-section" class="hero">
 		  <div class="home-slider owl-carousel">
-	      <div class="slider-item js-fullheight">
-	      	<div class="overlay"></div>
-	        <div class="container-fluid p-0">
-	          <div class="row d-md-flex no-gutters slider-text align-items-center justify-content-end" data-scrollax-parent="true">
-	          	<img class="one-third order-md-last img-fluid" src="images/bg_1.png" alt="">
-		          <div class="one-forth d-flex align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
-		          	<div class="text">
-		          		<span class="subheading">#New Arrival</span>
-		          		<div class="horizontal">
-				            <h1 class="mb-4 mt-3">Shoes Collection 2019</h1>
-				            <p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country.</p>
-				            
-				            <p><a href="#" class="btn-custom">Discover Now</a></p>
-				          </div>
-		            </div>
-		          </div>
-	        	</div>
-	        </div>
-	      </div>
+			@foreach ($new_arrival as $product)
+			<div class="slider-item js-fullheight">
+				<div class="overlay"></div>
+			  <div class="container-fluid p-0">
+				<div class="row d-flex no-gutters slider-text align-items-center justify-content-end" data-scrollax-parent="true">
+					<style>
+						.one-third.order-md-last {
+							
+						  width: 20rem;
+						  height: 20rem;
+						}
+						</style>
+				  <img class="one-third order-md-last " src="{{ asset('images/'.$product->image_path) }}" alt="">
+					<div class="one-forth d-flex align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
+						<div class="text">
+							<span class="subheading">#New Arrival</span>
+							<div class="horizontal">
+							  <h1 class="mb-4 mt-3">{{ $product->name }}</h1>
+							  <p class="mb-4">{!! $product->description !!}</p>
+							  
+							  <p><a href="{{ Route('product.show',$product->id) }}" class="btn-custom">Discover Now</a></p>
+							</div>
+					  </div>
+					</div>
+				   
+				  </div>
+				  
+			  </div>
+		  
+			</div>
+			@endforeach
+	     
+		  
 
-	      <div class="slider-item js-fullheight">
-	      	<div class="overlay"></div>
-	        <div class="container-fluid p-0">
-	          <div class="row d-flex no-gutters slider-text align-items-center justify-content-end" data-scrollax-parent="true">
-	          	<img class="one-third order-md-last img-fluid" src="images/bg_2.png" alt="">
-		          <div class="one-forth d-flex align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
-		          	<div class="text">
-		          		<span class="subheading">#New Arrival</span>
-		          		<div class="horizontal">
-				            <h1 class="mb-4 mt-3">New Shoes Winter Collection</h1>
-				            <p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country.</p>
-				            
-				            <p><a href="#" class="btn-custom">Discover Now</a></p>
-				          </div>
-		            </div>
-		          </div>
-	        	</div>
-	        </div>
-	      </div>
 	    </div>
     </section>
 
@@ -114,11 +109,14 @@
 		    					</div>
 		    					<div class="rating">
 	    							<p class="text-right mb-0">
+										<form action="" method="post">
+											@csrf
 	    								<a href="#"><span class="ion-ios-star-outline"></span></a>
 	    								<a href="#"><span class="ion-ios-star-outline"></span></a>
 	    								<a href="#"><span class="ion-ios-star-outline"></span></a>
 	    								<a href="#"><span class="ion-ios-star-outline"></span></a>
 	    								<a href="#"><span class="ion-ios-star-outline"></span></a>
+									</form>
 	    							</p>
 	    						</div>
 	    					</div>
@@ -136,14 +134,61 @@
     			</div>
     			
     			
-    			
+    			@endforeach
     			
     		</div>
-			@endforeach
+			
     	</div>
     </section>
 
-
+	{{-- <section class="ftco-section bg-light">
+		<div class="container">
+				<div class="row justify-content-center mb-3 pb-3">
+		  <div class="col-md-12 heading-section text-center ftco-animate">
+			<h2 class="mb-4">New Shoes Arrival</h2>
+			<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
+		  </div>
+		</div>   		
+		</div>
+		<div class="container">
+			<div class="row">
+				@foreach($new_arrival as $product)
+				<div class="col-sm-12 col-md-6 col-lg-3 ftco-animate d-flex">
+					<div class="product">
+						<a href="#" class="img-prod"><img class="img-fluid" src="images/product-8.png" alt="Colorlib Template">
+							<div class="overlay"></div>
+						</a>
+						<div class="text py-3 pb-4 px-3">
+							<div class="d-flex">
+								<div class="cat">
+									<span>{{ $product->category->name }}</span>
+								</div>
+								<div class="rating">
+									<p class="text-right mb-0">
+										<a href="#"><span class="ion-ios-star-outline"></span></a>
+										<a href="#"><span class="ion-ios-star-outline"></span></a>
+										<a href="#"><span class="ion-ios-star-outline"></span></a>
+										<a href="#"><span class="ion-ios-star-outline"></span></a>
+										<a href="#"><span class="ion-ios-star-outline"></span></a>
+									</p>
+								</div>
+							</div>
+							<h3><a href="#">{{ $product->price }}</a></h3>
+							  <div class="pricing">
+								<p class="price"><span>$120.00</span></p>
+							</div>
+							<p class="bottom-area d-flex px-3">
+								<a href="#" class="add-to-cart text-center py-2 mr-1"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+								<a href="#" class="buy-now text-center py-2">Buy now<span><i class="ion-ios-cart ml-1"></i></span></a>
+							</p>
+						</div>
+					</div>
+				</div>
+				@endforeach
+			</div>
+			
+		</div>
+	</section> --}}
 
     <section class="ftco-section ftco-choose ftco-no-pb ftco-no-pt">
     	<div class="container">
@@ -155,7 +200,7 @@
 								<span class="subheading">Men's Shoes</span>
     						<h2>Men's Collection</h2>
     						<p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-    						<p><a href="#" class="btn btn-black px-3 py-2">Shop now</a></p>
+    						<p><a href="{{ Route('typefilter',['type'=>'men']) }}" class="btn btn-black px-3 py-2">Shop now</a></p>
     					</div>
     				</div>
 					</div>
@@ -168,7 +213,7 @@
 	    								<span class="subheading">Women's Shoes</span>
 			    						<h2>Women's Collection</h2>
 			    						<p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-			    						<p><a href="#" class="btn btn-black px-3 py-2">Shop now</a></p>
+			    						<p><a href="{{ Route('typefilter',['type'=>'women']) }}" class="btn btn-black px-3 py-2">Shop now</a></p>
 			    					</div>
 	    						</div>
 	    					</div>
@@ -181,7 +226,7 @@
 		    								<span class="subheading">Summer Sale</span>
 				    						<h2>Extra 50% Off</h2>
 				    						<p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-				    						<p><a href="#" class="btn btn-black px-3 py-2">Shop now</a></p>
+				    						<p><a href="{{ Route('typefilter',['type'=>'summer']) }}" class="btn btn-black px-3 py-2">Shop now</a></p>
 				    					</div>
 		    						</div>
 	    						</div>
@@ -191,7 +236,7 @@
 		    								<span class="subheading">Shoes</span>
 				    						<h2>Best Sellers</h2>
 				    						<p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-				    						<p><a href="#" class="btn btn-black px-3 py-2">Shop now</a></p>
+				    						<p><a href="{{ Route('typefilter',['type'=>'bestseller']) }}" class="btn btn-black px-3 py-2">Shop now</a></p>
 				    					</div>
 		    						</div>
 	    						</div>
@@ -206,28 +251,27 @@
     <section class="ftco-section ftco-deal bg-primary">
     	<div class="container">
     		<div class="row">
+				@foreach ($deal_Product as $product)
+					
+				@endforeach
     			<div class="col-md-6">
-    				<img src="images/prod-1.png" class="img-fluid" alt="">
+    				<img src="{{ asset('images/'.$product->image_path)}}" class="img-fluid" alt="">
     			</div>
     			<div class="col-md-6">
     				<div class="heading-section heading-section-white">
     					<span class="subheading">Deal of the month</span>
-	            <h2 class="mb-3">Deal of the month</h2>
+	            <h2 class="mb-3">{{ $product->category->name }}</h2>
 	          </div>
     				<div id="timer" class="d-flex mb-4">
-						  <div class="time" id="days"></div>
+					<div class="time" id="days"></div>
 						  <div class="time pl-4" id="hours"></div>
 						  <div class="time pl-4" id="minutes"></div>
 						  <div class="time pl-4" id="seconds"></div>
 						</div>
 						<div class="text-deal">
-							<h2><a href="#">Nike Free RN 2019 iD</a></h2>
-							<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
-							<ul class="thumb-deal d-flex mt-4">
-								<li class="img" style="background-image: url(images/product-6.png);"></li>
-								<li class="img" style="background-image: url(images/product-2.png);"></li>
-								<li class="img" style="background-image: url(images/product-4.png);"></li>
-							</ul>
+							<h2><a href="{{ Route('product.show',$product->id) }}">{{ $product->name }}</a></h2>
+							<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="mr-5 price-sale">${{ $product->price }}</span></p>
+			
 						</div>
     			</div>
     		</div>
